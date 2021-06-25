@@ -1,0 +1,172 @@
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+#include <string>
+#include <Windows.h>
+#include<io.h> 
+ 
+ 
+using namespace std;
+ 
+ 
+struct Facult {
+    char facultet[50];
+    int kolvo_student;
+    float sr_ball;
+    int kolvo_otlich;
+};
+using namespace std;
+ 
+int main(int argc, char* argv[]) {
+ 
+    SetConsoleOutputCP(1251);
+    SetConsoleCP(1251);
+ 
+    ofstream fout("facultet.txt");
+    fout
+        << "Факультет" << std::setw(22)
+        << std::setw(22) << "Количество студентов"
+        << std::setw(14) << "Средний балл"
+        << std::setw(18) << "Число отличников"
+        << std::endl;
+    fout.close();
+ 
+    while (true) {
+        int variant;
+        cout << "Выберите вариант\n" << endl;
+        cout << "1. Добавить запись\n"
+            << "2. Вывести запись на экран\n"
+            << "3.Удалить запись\n"
+            << "4. Изменить запись\n"
+            << "5. Вывести факультеты со ср. оценкой >4.0\n" << endl;
+        cout << ">>> ";
+        cin >> variant;
+ 
+ 
+ 
+        Facult student;
+        switch (variant) {
+        case 1:
+        {
+ 
+            cout << "Название факультета " << '\n';
+            cin >> student.facultet;
+            cout << "Количество студентов " << '\n';
+            cin >> student.kolvo_student;
+            cout << "Средний балл " << '\n';
+            cin >> student.sr_ball;
+            cout << "Число отличников " << '\n';
+            cin >> student.kolvo_otlich;
+ 
+            ofstream fout("facultet.txt", ios_base::app);
+ 
+            fout << std::setw(6) << student.facultet << "\t";
+            fout << std::setw(14) << student.kolvo_student << "\t";
+            fout << std::setw(14) << student.sr_ball << "\t";
+            fout << std::setw(14) << student.kolvo_otlich << "\t";
+            fout << std::endl;
+            fout.close();
+            break;
+        }
+ 
+        case 2:
+        {
+            ifstream file("facultet.txt"); // открыли файл для чтения
+            int d = 0;
+            string line;
+            if (file.is_open()==true)
+            {
+            while (!file.eof())
+            {
+                getline(file, line);
+                cout << line << endl;
+                d++;
+            }
+            }
+ 
+            break;
+        }
+        case 3:
+        {
+ 
+            std::ifstream file_in;
+            file_in.open("facultet.txt");
+ 
+            std::cout << "Введите номер строки для удаления :" << std::endl;
+            int i_number_line_delete = 0; //для хранения номера строки который нужно удалить
+            std::cin >> i_number_line_delete;
+ 
+            int i_number_line_now = 0; //счётчик строк
+            std::string line; //для хранения строки
+            std::string line_file_text; //для хранения текста файла
+ 
+            while (getline(file_in, line))
+            {
+                i_number_line_now++;
+ 
+                if (!(i_number_line_now == i_number_line_delete))
+                {
+                    line_file_text.insert(line_file_text.size(), line); /*дабавить строку*/
+                    /*добавить перенос на слудующую строку*/
+                    line_file_text.insert(line_file_text.size(), "\r\n");
+                }
+            }
+ 
+            file_in.close();
+ 
+            //теперь в line_file_text будет содержаться измененный текст файла, теперь можно перезаписать файл
+ 
+            std::ofstream file_out;
+ 
+            file_out.open("facultet.txt", std::ios::trunc | std::ios::binary); //открыть и обрезать
+ 
+            //записать
+ 
+            file_out.write(line_file_text.c_str(), line_file_text.size());
+            file_out.clear();
+ 
+            break;
+        }
+        case 4:
+        {
+                        std::ifstream file_in;
+            file_in.open("facultet.txt");
+ 
+            std::cout << "Введите номер строки для удаления :" << std::endl;
+            int i_number_line_delete = 0; //для хранения номера строки который нужно удалить
+            std::cin >> i_number_line_delete;
+ 
+            int i_number_line_now = 0; //счётчик строк
+            std::string line; //для хранения строки
+            std::string line_file_text; //для хранения текста файла
+ 
+            while (getline(file_in, line))
+            {
+                i_number_line_now++;
+ 
+                if (!(i_number_line_now == i_number_line_delete))
+                {
+                    line_file_text.insert(line_file_text.size(), line); /*дабавить строку*/
+                    /*добавить перенос на слудующую строку*/
+                    line_file_text.insert(line_file_text.size(), "\r\n");
+                }
+            }
+ 
+            file_in.close();
+ 
+            //теперь в line_file_text будет содержаться измененный текст файла, теперь можно перезаписать файл
+ 
+            std::ofstream file_out;
+ 
+            file_out.open("facultet.txt", std::ios::trunc | std::ios::binary); //открыть и обрезать
+ 
+            //записать
+ 
+            file_out.write(line_file_text.c_str(), line_file_text.size());
+            file_out.clear();
+            break;
+        }
+        }
+    }
+    return 0;
+}
